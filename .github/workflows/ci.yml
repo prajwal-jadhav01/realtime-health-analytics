@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit-tests:
+    name: Unit tests (Flink mini-cluster)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Build and test
+        working-directory: pipeline
+        run: mvn -B verify
+
+  end-to-end:
+    name: End-to-end (Kafka -> Flink -> Pinot with auth)
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start the pipeline (monitoring left out to save CI time)
+        run: |
+          docker compose up -d --build zookeeper kafka kafka-init \
+            pinot-controller pinot-broker pinot-server pinot-init \
+            flink-jobmanager flink-taskmanager event-generator
+      - name: Smoke test
+        run: ./scripts/smoke-test.sh
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --tail 200
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
