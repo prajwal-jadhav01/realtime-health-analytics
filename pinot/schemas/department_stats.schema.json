@@ -1,0 +1,18 @@
+{
+  "schemaName": "department_stats",
+  "dimensionFieldSpecs": [
+    { "name": "department", "dataType": "STRING" },
+    { "name": "windowEnd", "dataType": "LONG" }
+  ],
+  "metricFieldSpecs": [
+    { "name": "events", "dataType": "LONG" },
+    { "name": "admissions", "dataType": "LONG" },
+    { "name": "discharges", "dataType": "LONG" },
+    { "name": "abnormalReadings", "dataType": "LONG" },
+    { "name": "avgHeartRate", "dataType": "DOUBLE" },
+    { "name": "minSpo2", "dataType": "INT" }
+  ],
+  "dateTimeFieldSpecs": [
+    { "name": "windowStart", "dataType": "LONG", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MINUTES" }
+  ]
+}

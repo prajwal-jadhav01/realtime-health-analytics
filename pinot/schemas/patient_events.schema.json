@@ -1,0 +1,20 @@
+{
+  "schemaName": "patient_events",
+  "dimensionFieldSpecs": [
+    { "name": "eventId", "dataType": "STRING" },
+    { "name": "patientId", "dataType": "STRING" },
+    { "name": "hospitalId", "dataType": "STRING" },
+    { "name": "department", "dataType": "STRING" },
+    { "name": "eventType", "dataType": "STRING" },
+    { "name": "abnormal", "dataType": "BOOLEAN" }
+  ],
+  "metricFieldSpecs": [
+    { "name": "heartRate", "dataType": "INT" },
+    { "name": "spo2", "dataType": "INT" },
+    { "name": "systolicBp", "dataType": "INT" },
+    { "name": "temperature", "dataType": "DOUBLE" }
+  ],
+  "dateTimeFieldSpecs": [
+    { "name": "eventTime", "dataType": "LONG", "format": "1:MILLISECONDS:EPOCH", "granularity": "1:MILLISECONDS" }
+  ]
+}
