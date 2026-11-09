@@ -41,6 +41,10 @@ Pinot's REALTIME tables consume Kafka directly. This decouples the two systems: 
 
 The other common pattern is pushing **batch segments** from Flink into an OFFLINE table using Pinot's Flink connector. That path is where authentication breaks: the connector's sink doesn't pass credentials when it uploads segments, so turning on Pinot auth makes every Flink upload fail with `401 Unauthorized`. I hit this in production and opened a fix upstream: **[apache/pinot#20121](https://github.com/apache/pinot/pull/20121)** (in review). Once it ships in a Pinot release, this repo will add an OFFLINE backfill job that uses it.
 
+### Pipeline health in Grafana
+
+![Grafana dashboard: Flink throughput, dead-letter rate, Pinot ingestion, checkpoints](docs/grafana-dashboard.png)
+
 ## Running it
 
 Requirements: Docker with about 6 GB of memory available to it.

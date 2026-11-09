@@ -4,7 +4,7 @@
   "schemaVersion": 39,
   "refresh": "10s",
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "tags": [
@@ -15,7 +15,7 @@
     {
       "id": 1,
       "type": "timeseries",
-      "title": "Flink: records in per second (per task)",
+      "title": "Flink: records per second",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -35,8 +35,18 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (task_name) (flink_taskmanager_job_task_numRecordsInPerSecond)",
-          "legendFormat": "{{task_name}}"
+          "expr": "sum(flink_taskmanager_job_task_operator_numRecordsOutPerSecond{operator_name=\"Source:_kafka_patient_events\"})",
+          "legendFormat": "read from Kafka"
+        },
+        {
+          "refId": "B",
+          "expr": "sum(flink_taskmanager_job_task_operator_numRecordsOutPerSecond{operator_name=\"parse_and_validate\"})",
+          "legendFormat": "valid events"
+        },
+        {
+          "refId": "C",
+          "expr": "sum(flink_taskmanager_job_task_operator_numRecordsOutPerSecond{operator_name=\"kafka_patient_events_dlq:_Writer\"})",
+          "legendFormat": "sent to dead-letter topic"
         }
       ]
     },
